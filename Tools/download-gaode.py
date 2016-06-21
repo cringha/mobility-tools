@@ -8,7 +8,7 @@ import sys;
 
 import urllib.request
 
-user_agent = 'Mozilla/7.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.3116';
+# user_agent = 'Mozilla/7.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.3116';
 #
 def downloadGDmap( path,  city , key ):
 
@@ -69,7 +69,10 @@ def downloadGDmap( path,  city , key ):
 
 
 
-
+# 检查 JSON MAP 是否合法， 
+# 1：status == 1 数据合法 ， 6 表示 服务器检测客户端恶意 下载数据 
+# 2, busData != null, 说明要查询的路线不存在，或者查找到多个 非线路的地址；
+# 
 def checkJSON(content, name):
 	_jsonObj = json.loads(content);
 	status = _jsonObj['status'];
@@ -84,13 +87,12 @@ def checkJSON(content, name):
 	return 0;
 
 
-city = '320500';
-key = '19';
-
-
+# city = '320500';
+# key = '19';
 # downloadGDmap('./data1', city, key);
 
 
+# open bus-line list file 
 def openList(file , city,  path = './data1'):
 
 	basepath = path + "/" + city;
@@ -105,9 +107,9 @@ def openList(file , city,  path = './data1'):
 		h = open(file,encoding='utf-8');
 		for line in h:
 			name = line.strip();
-			print('name ', name);
+#			print('name ', name);
 			if name in list:
-				print( ' exit ');
+				print( name + ' has downloaded, continue.');
 			else:
 				result = downloadGDmap( path, city, name );
 				if not result :
